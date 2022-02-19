@@ -22,3 +22,7 @@ The dashboard below is the weather app component of YHP.
 
 Below please find the sketch of the dashboard:
 ![Dashboard Sketch](dashboard_sketch.png)
+
+License
+-------
+The materials are licensed under the terms of the MIT license (Copyright (c) 2022 Master of Data Science at the University of British Columbia). See [here](https://github.com/UBC-MDS/mental_health_in_tech_dashboard/blob/main/LICENSE) for details.
