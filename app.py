@@ -44,7 +44,7 @@ df = df.groupby(["state","county","county_state","month"], as_index=False).agg({
 
 nestedOptions = county_opt_dict[states[0]]
 
-selected_counties = ['Autauga, Alabama', 'Yolo, California', 'Houston, Texas', 'Middlesex, Massachusetts', 'Dixie, Florida']
+selected_counties = ['Yolo, California', 'Houston, Texas', 'Middlesex, Massachusetts']
 
 app.layout = html.Div(
     [
@@ -94,7 +94,7 @@ def set_display_children(add_county, state, county):
         county_state = county + ", " + state
         if county_state not in selected_counties:
             selected_counties.append(county_state)
-    return 'you have selected {}'.format(selected_counties)
+    return html.Div([html.Div([x, html.Button('Remove', id='remove', n_clicks=0)]) for x in selected_counties])
 
 # plot
 @app.callback(
