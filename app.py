@@ -135,7 +135,10 @@ def plot_altair(add_county, state, county):
             color = alt.Color('county_state',
                 legend=alt.Legend(
                 orient='top',
-                title="", labelFontSize=18, labelLimit=0 )
+                columns=4,
+                title="", 
+                labelFontSize=18, 
+                labelLimit=0 )
             ),
             x=alt.X('county_state', title=""),
             y=alt.Y('percent_unemployed_CDC', title="Unemployed (%)")).properties(
