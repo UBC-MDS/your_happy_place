@@ -9,7 +9,21 @@ df = pd.read_csv('data/processed/us_counties_processed.csv')
 app = Dash(__name__)
 server = app.server
 
-df = df[["state","county", "county_state", "year", "month", "mean_temp", "min_temp", "max_temp", "rain", "snow", "precipitation"]]
+df = df[["state",
+        "county", 
+        "county_state", 
+        "year", "month", 
+        "mean_temp", 
+        "min_temp", 
+        "max_temp", 
+        "rain", 
+        "snow", 
+        "precipitation", 
+        "percent_unemployed_CDC",
+        "population_density_per_sqmi",
+        "percent_age_17_and_younger",
+        "percent_age_65_and_older",
+        ]]
 states = df.state.unique()
 county_opt_dict = {}
 for state in states:
@@ -22,11 +36,15 @@ df = df.groupby(["state","county","county_state","month"], as_index=False).agg({
                                                                                 "max_temp":"mean", 
                                                                                 "precipitation":"mean",
                                                                                 "rain":"mean",
-                                                                                "snow":"mean" })
+                                                                                "snow":"mean",
+                                                                                "percent_unemployed_CDC":"mean",
+                                                                                "population_density_per_sqmi":"mean",
+                                                                                "percent_age_17_and_younger":"mean",
+                                                                                "percent_age_65_and_older":"mean" })
 
 nestedOptions = county_opt_dict[states[0]]
 
-selected_counties = ['Autauga, Alabama']
+selected_counties = ['Autauga, Alabama', 'Yolo, California', 'Houston, Texas', 'Middlesex, Massachusetts', 'Dixie, Florida']
 
 app.layout = html.Div(
     [
@@ -78,7 +96,6 @@ def set_display_children(add_county, state, county):
             selected_counties.append(county_state)
     return 'you have selected {}'.format(selected_counties)
 
-
 # plot
 @app.callback(
     Output('scatter', 'srcDoc'),
@@ -88,8 +105,43 @@ def set_display_children(add_county, state, county):
 def plot_altair(add_county, state, county):
     if (state and county):
         df_filtered = df[df['county_state'].isin(selected_counties)]
-        print(county)
-        print(selected_counties)
+
+        chart_unemp = alt.Chart(df_filtered).mark_bar().encode(
+            color = alt.Color('county_state',
+                legend=alt.Legend(
+                title='Selected Counties')
+            ),
+            x=alt.X('county_state', title=""),
+            y=alt.Y('percent_unemployed_CDC', title="Unemployed (%)")).properties(
+                title="Percent Unemployed CDC")
+
+        chart_den = alt.Chart(df_filtered).mark_bar().encode(
+            color = alt.Color('county_state',
+                legend=alt.Legend(
+                title='Selected Counties')
+            ),
+            x=alt.X('county_state', title=""),
+            y=alt.Y('population_density_per_sqmi', title="Population Density (per sqrm)")).properties(
+                title="Population Density")
+
+        chart_18 = alt.Chart(df_filtered).mark_bar().encode(
+            color = alt.Color('county_state',
+                legend=alt.Legend(
+                title='Selected Counties')
+            ),
+            x=alt.X('county_state', title=""),
+            y=alt.Y('percent_age_17_and_younger', title="Residents under 18 yo (%)")).properties(
+                title="Percent Population 18 and younger")
+
+        chart_65 = alt.Chart(df_filtered).mark_bar().encode(
+            color = alt.Color('county_state',
+                legend=alt.Legend(
+                title='Selected Counties')
+            ),
+            x=alt.X('county_state', title=""),
+            y=alt.Y('percent_age_65_and_older', title="Residents over 65 yo (%)")).properties(
+                title="Percent Population 65 and over")
+
         chart_t = alt.Chart(df_filtered).mark_line().encode(
             color = alt.Color('county_state',
                 legend=alt.Legend(
@@ -98,7 +150,6 @@ def plot_altair(add_county, state, county):
             x=alt.X('month', title="Month"),
             y=alt.Y('mean_temp', title="Mean Temperature (F°)")).properties(
                 title="Mean Monthly Temperature")
-        #return chart.to_html()
 
         chart_rain = alt.Chart(df_filtered).mark_line().encode(
             color = alt.Color('county_state',
@@ -146,7 +197,7 @@ def plot_altair(add_county, state, county):
             y=alt.Y('precipitation', title="Mean Precipitation (in)")).properties(
                 title="Mean Monthly Precipitation")
 
-        chart_combo = (chart_t & chart_t_min & chart_t_max) | (chart_per & chart_rain & chart_snow) 
+        chart_combo = (chart_unemp & chart_den & chart_18 & chart_65)| ( chart_t & chart_t_min & chart_t_max) | (chart_per & chart_rain & chart_snow) 
 
         return chart_combo.to_html()
 
