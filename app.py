@@ -130,90 +130,64 @@ def plot_altair(add_county, state, county):
         chart_unemp = alt.Chart(df_filtered).mark_bar().encode(
             color = alt.Color('county_state',
                 legend=alt.Legend(
-                title='Selected Counties')
+                orient='top',
+                title="", labelFontSize=18, labelLimit=0 )
             ),
             x=alt.X('county_state', title=""),
             y=alt.Y('percent_unemployed_CDC', title="Unemployed (%)")).properties(
                 title="Percent Unemployed CDC")
 
         chart_den = alt.Chart(df_filtered).mark_bar().encode(
-            color = alt.Color('county_state',
-                legend=alt.Legend(
-                title='Selected Counties')
-            ),
+            color = alt.Color('county_state'),
             x=alt.X('county_state', title=""),
             y=alt.Y('population_density_per_sqmi', title="Population Density (per sqrm)")).properties(
                 title="Population Density")
 
         chart_18 = alt.Chart(df_filtered).mark_bar().encode(
-            color = alt.Color('county_state',
-                legend=alt.Legend(
-                title='Selected Counties')
-            ),
+            color = alt.Color('county_state'),
             x=alt.X('county_state', title=""),
             y=alt.Y('percent_age_17_and_younger', title="Residents under 18 yo (%)")).properties(
                 title="Percent Population 18 and younger")
 
         chart_65 = alt.Chart(df_filtered).mark_bar().encode(
-            color = alt.Color('county_state',
-                legend=alt.Legend(
-                title='Selected Counties')
-            ),
+            color = alt.Color('county_state'),
             x=alt.X('county_state', title=""),
             y=alt.Y('percent_age_65_and_older', title="Residents over 65 yo (%)")).properties(
                 title="Percent Population 65 and over")
 
         chart_t = alt.Chart(df_filtered).mark_line().encode(
-            color = alt.Color('county_state',
-                legend=alt.Legend(
-                title='Selected Counties')
-            ),
+            color = alt.Color('county_state' ),
             x=alt.X('month', title="Month"),
             y=alt.Y('mean_temp', title="Mean Temperature (F°)")).properties(
                 title="Mean Monthly Temperature")
 
         chart_rain = alt.Chart(df_filtered).mark_line().encode(
-            color = alt.Color('county_state',
-                legend=alt.Legend(
-                title='Selected Counties')
-            ),
+            color = alt.Color('county_state'),
             x=alt.X('month', title="Month"),
             y=alt.Y('rain', title="Mean Rainfall (in)")).properties(
                 title="Mean Monthly Rainfall")
 
         chart_snow = alt.Chart(df_filtered).mark_line().encode(
-            color = alt.Color('county_state',
-                legend=alt.Legend(
-                title='Selected Counties')
-            ),
+            color = alt.Color('county_state' ),
             x=alt.X('month', title="Month"),
             y=alt.Y('snow', title="Mean Snowfall (in)")).properties(
                 title="Mean Monthly Snowfall")
 
         chart_t_min = alt.Chart(df_filtered).mark_line().encode(
-            color = alt.Color('county_state',
-                legend=alt.Legend(
-                title='Selected Counties')
-            ),
+            color = alt.Color('county_state' ),
             x=alt.X('month', title="Month"),
             y=alt.Y('min_temp', title="Min Temperature (F°)")).properties(
                 title="Minn Monthly Temperature")
         #return chart.to_html()
 
         chart_t_max = alt.Chart(df_filtered).mark_line().encode(
-            color = alt.Color('county_state',
-                legend=alt.Legend(
-                title='Selected Counties')
-            ),
+            color = alt.Color('county_state' ),
             x=alt.X('month', title="Month"),
             y=alt.Y('max_temp', title="Max Temperature (F°)")).properties(
                 title="Max Monthly Temperature")
 
         chart_per = alt.Chart(df_filtered).mark_line().encode(
-            color = alt.Color('county_state',
-                legend=alt.Legend(
-                title='Selected Counties')
-            ),
+            color = alt.Color('county_state' ),
             x=alt.X('month', title="Month"),
             y=alt.Y('precipitation', title="Mean Precipitation (in)")).properties(
                 title="Mean Monthly Precipitation")
