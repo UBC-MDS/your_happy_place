@@ -48,6 +48,10 @@ selected_counties = ['Yolo, California', 'Houston, Texas', 'Middlesex, Massachus
 
 app.layout = dbc.Container(
     [
+        dbc.Row([html.H1('Your Happy Place')],
+            style={'margin-top':'20px',
+                   'color':'#90a0ab'}),
+        html.Hr([]),
         dbc.Row([
             dbc.Col([
                 dcc.Dropdown(
