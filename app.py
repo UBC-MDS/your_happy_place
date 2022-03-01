@@ -85,7 +85,7 @@ app.layout = dbc.Container(
         dbc.Row([html.Div([
             html.Iframe(
             id='scatter',
-            style={'border-width': '0', 'width': '100%', 'height': '400px'}),
+            style={'border-width': '0', 'width': '100%', 'height': '2000px'}),
             ],style={}),
         ])
         
