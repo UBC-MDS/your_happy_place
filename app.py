@@ -6,7 +6,7 @@ import pandas as pd
 
 df = pd.read_csv('data/processed/us_counties_processed.csv')
 
-app = Dash(__name__)
+app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
 
 df = df[["state",
@@ -46,28 +46,45 @@ nestedOptions = county_opt_dict[states[0]]
 
 selected_counties = ['Yolo, California', 'Houston, Texas', 'Middlesex, Massachusetts']
 
-app.layout = html.Div(
+app.layout = dbc.Container(
     [
-        html.Div([
+        dbc.Row([
+            dbc.Col([
+                dcc.Dropdown(
+                id='state-widget',
+                value='Alabama',  # REQUIRED to show the plot on the first page load
+                options=[
+                    {'label': state, 'value': state} for state in states],
+                style={'margin': '5px',
+                        'max-width': '250px'}),
+                dcc.Dropdown(
+                    id='county-widget',
+                    value='Autauga',
+                    style={'margin': '5px',
+                        'max-width': '250px'}),
+                    
+                dbc.Button('Add County', 
+                    className="me-1", 
+                    id='add-county', 
+                    n_clicks=0,
+                    style={'margin-left': '9px',
+                            'width': '250px'}
+                )
+            ], md=4),
+
+            dbc.Col([
+                html.Div(id='selected_counties')], md=4),
+            ], style={'margin-top':'20px'}),
+            
+        html.Hr([]),
+
+        dbc.Row([html.Div([
             html.Iframe(
             id='scatter',
             style={'border-width': '0', 'width': '100%', 'height': '400px'}),
-            dcc.Dropdown(
-            id='state-widget',
-            value='Alabama',  # REQUIRED to show the plot on the first page load
-            options=[
-                {'label': state, 'value': state} for state in states]),
             ],style={}),
-        html.Div([
-        dcc.Dropdown(
-            id='county-widget',
-            value='Autauga',
-            ),
-            ],style={}
-        ),
-        html.Button('Add County', id='add-county', n_clicks=0),
-        html.Hr(),
-        html.Div(id='selected_counties')
+        ])
+        
     ]
 )
 
@@ -94,7 +111,7 @@ def set_display_children(add_county, state, county):
         county_state = county + ", " + state
         if county_state not in selected_counties:
             selected_counties.append(county_state)
-    return html.Div([html.Div([x, html.Button('Remove', id='remove', n_clicks=0)]) for x in selected_counties])
+    return html.Ul([html.Li([x, html.Button('', className="btn-close", id='remove', n_clicks=0)]) for x in selected_counties])
 
 # plot
 @app.callback(
