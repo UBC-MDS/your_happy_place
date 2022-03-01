@@ -104,13 +104,17 @@ def update_county_dropdown(state):
         return {}, None
     return [{'label': county, 'value': county} for county in county_opt_dict[state]], None
 
+
 #Button clicker
+# TODO: add remove Input below
+# make sure remove buttons have neccesary ids / props
 @app.callback(
     Output('selected_counties', 'children'),
     [Input("add-county", "n_clicks")],[
     State('state-widget', 'value'),
     State('county-widget', 'value')])
 def set_display_children(add_county, state, county):
+    #    selected_counties.remove(county)
     if (state and county):
         county_state = county + ", " + state
         if county_state not in selected_counties:
