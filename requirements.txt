@@ -1,0 +1,7 @@
+altair
+dash
+numpy
+pandas
+gunicorn
+vega_datasets
+dash_bootstrap_components
