@@ -21,7 +21,7 @@ The dashboard below is the weather app component of YHP.
 4. You may remove the county from the "selected counties" menu by clicking on it on the state map. You may also simply un-check it on the right-hand side and it will no longer show up on the plots.
 
 Below please find the sketch of the dashboard:
-![Dashboard Sketch](dashboard_sketch.png)
+![Dashboard Sketch](images/dashboard_sketch.png)
 
 License
 -------
