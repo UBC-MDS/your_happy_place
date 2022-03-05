@@ -1,6 +1,6 @@
 # Your Happy Place!
 
-![ Alt text](name-of-gif-file. gif) / ! [](name-of-gif-file. gif)
+![ Alt text](demo.gif) / ! [](demo.gif)
 
 # Mission
 
