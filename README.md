@@ -35,6 +35,18 @@ You can then use these plots to compare the cities you have selected above.
 
 5. Its just that simple!
 
+# Want to check it out locally?!
+
+You can now run this app using Docker! To do so:
+
+1. Clone this repo
+
+2. Run the following command from repo's root:
+
+```bash
+docker-compose up
+```
+
 # Who are we?
 
 The founders of the YHP - 
