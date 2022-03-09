@@ -47,6 +47,8 @@ You can now run this app using Docker! To do so:
 docker-compose up
 ```
 
+3. Head over to http://localhost:8000/ and pick some counties to explore!
+
 # Who are we?
 
 The founders of the YHP - 
