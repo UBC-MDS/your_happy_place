@@ -8,7 +8,7 @@ import pandas as pd
 
 df = pd.read_csv('data/processed/us_counties_processed.csv')
 
-app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
 app.title = "Your Happy Place: Counties Comparison by Climate and Demographics"
 
