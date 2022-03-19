@@ -59,6 +59,15 @@ app.layout = dbc.Container(
         dbc.Row([html.H1('Your Happy Place')],
             style={'margin-top':'20px',
                    'color':'#90a0ab'}),
+        dbc.Row([
+            html.Div('A project for DSCI-532, DataVisualization II'),
+            html.Div([
+                'By Group 29, AKA: ', dcc.Link('Aldo', href='https://github.com/aldojasb'), ', ',
+                 dcc.Link('Rada', href='https://github.com/radascript'), ' & ',
+                 dcc.Link('Yair', href='https://github.com/gutermanyair')
+            ])
+            
+        ]),
         html.Hr([]),
         dbc.Row([
     
@@ -95,30 +104,33 @@ app.layout = dbc.Container(
                         'max-width': '250px'}
                 )], md=4),
             ], style={'margin-top':'20px'}),
-            
-        html.Hr([]),
 
         dbc.Row([html.Div([
             dbc.Tabs([
                 dbc.Tab([
-                    html.Hr([]),
                     html.H1('Climate'),
                     html.P('Temperatures and Precipitation'),
                     html.Iframe(
-                        id='scatter',
+                        id='climate',
                         style={'border-width': '0', 'width': '100%', 'height': '2000px'})
                     ],
-                    label='Climate'),
+                    label='Climate',
+                    style={'padding': '20px', 
+                           'border-left': '1px solid #dee2e6',
+                           'border-right': '1px solid #dee2e6'
+                           }),
 
                 dbc.Tab([
-                    html.Hr([]),
                     html.H1('Social'),
                     html.P('Review socioeconomic comparisons'),
                     html.Iframe(
                         id='social',
-                        style={'border-width': '0', 'width': '100%', 'height': '2000px'})
+                        style={'border-width': '0', 'width': '100%', 'height': '800px'})
                     ],
-                    label='Social')
+                    label='Social',
+                    style={'padding': '20px', 
+                           'border-left': '1px solid #dee2e6',
+                           'border-right': '1px solid #dee2e6'})
             ]),
             
             
@@ -141,9 +153,6 @@ def update_county_dropdown(state):
     return [{'label': county, 'value': county} for county in county_opt_dict[state]], None
 
 
-#Button clicker
-# TODO: add remove Input below
-# make sure remove buttons have neccesary ids / props
 @app.callback(
     Output('selected_counties', 'children'),
     [Input("add-county", "n_clicks"),
@@ -165,7 +174,7 @@ def set_display_children(add_county, reset, state, county):
 
 # plot
 @app.callback(
-    [Output('scatter', 'srcDoc'),
+    [Output('climate', 'srcDoc'),
     Output('social', 'srcDoc')],
     [Input("add-county", "n_clicks"),
     Input("reset", "n_clicks"),
@@ -181,10 +190,8 @@ def plot_altair(add_county, reset, state, county):
         selected_counties = []
         df_filtered = df[df['county_state'].isin(selected_counties)]
         print('here')
-        #df_filtered = df[df['county'=="nonexistant_to_return_empty_df"]]
     else:
         if (state and county):
-            #print(selected_counties)
             df_filtered = df[df['county_state'].isin(selected_counties)]
 
     click1 = alt.selection_multi(fields=['county_state'], bind='legend')
@@ -260,7 +267,7 @@ def plot_altair(add_county, reset, state, county):
         opacity=alt.condition(click2, alt.value(1), alt.value(0.2)),
         x=alt.X('month(date):T', title="Month"),
         y=alt.Y('min_temp', title="Min Temperature (F°)")).properties(
-            title="Minn Monthly Temperature")
+            title="Min Monthly Temperature")
 
     chart_t_max = alt.Chart(df_filtered).mark_line().encode(
         color = alt.Color('county_state' ),
