@@ -1,4 +1,3 @@
-from errno import EEXIST
 from dash import Dash, html, dcc, Input, Output, State
 import altair as alt
 import dash
