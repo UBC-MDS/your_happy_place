@@ -61,6 +61,7 @@ app.layout = dbc.Container(
                    'color':'#90a0ab'}),
         html.Hr([]),
         dbc.Row([
+    
             dbc.Col([
                 dcc.Dropdown(
                 id='state-widget',
@@ -98,10 +99,30 @@ app.layout = dbc.Container(
         html.Hr([]),
 
         dbc.Row([html.Div([
-            html.Iframe(
-            id='scatter',
-            style={'border-width': '0', 'width': '100%', 'height': '2000px'}),
-            ],style={}),
+            dbc.Tabs([
+                dbc.Tab([
+                    html.Hr([]),
+                    html.H1('Climate'),
+                    html.P('Temperatures and Precipitation'),
+                    html.Iframe(
+                        id='scatter',
+                        style={'border-width': '0', 'width': '100%', 'height': '2000px'})
+                    ],
+                    label='Climate'),
+
+                dbc.Tab([
+                    html.Hr([]),
+                    html.H1('Social'),
+                    html.P('Review socioeconomic comparisons'),
+                    html.Iframe(
+                        id='social',
+                        style={'border-width': '0', 'width': '100%', 'height': '2000px'})
+                    ],
+                    label='Social')
+            ]),
+            
+            
+            ]),
         ])
         
     ]
@@ -144,7 +165,8 @@ def set_display_children(add_county, reset, state, county):
 
 # plot
 @app.callback(
-    Output('scatter', 'srcDoc'),
+    [Output('scatter', 'srcDoc'),
+    Output('social', 'srcDoc')],
     [Input("add-county", "n_clicks"),
     Input("reset", "n_clicks"),
     ],[
@@ -165,7 +187,8 @@ def plot_altair(add_county, reset, state, county):
             #print(selected_counties)
             df_filtered = df[df['county_state'].isin(selected_counties)]
 
-    click = alt.selection_multi(fields=['county_state'], bind='legend')
+    click1 = alt.selection_multi(fields=['county_state'], bind='legend')
+    click2 = alt.selection_multi(fields=['county_state'], bind='legend')
 
     chart_unemp = alt.Chart(df_filtered).mark_bar().encode(
         color = alt.Color('county_state',
@@ -176,77 +199,89 @@ def plot_altair(add_county, reset, state, county):
             labelFontSize=18, 
             labelLimit=0 )
         ),
-        opacity=alt.condition(click, alt.value(1), alt.value(0.05)),
-        x=alt.X('county_state', title=""),
-        y=alt.Y('percent_unemployed_CDC', title="Unemployed (%)")).properties(
-            title="Percent Unemployed CDC").add_selection(click)
+        opacity=alt.condition(click1, alt.value(1), alt.value(0.05)),
+        x=alt.X('percent_unemployed_CDC', title="Unemployed (%)"),
+        y=alt.Y('county_state', title="")).properties(
+            title="Percent Unemployed CDC").add_selection(click1)
 
     chart_den = alt.Chart(df_filtered).mark_bar().encode(
         color = alt.Color('county_state'),
-        opacity=alt.condition(click, alt.value(1), alt.value(0.05)),
-        x=alt.X('county_state', title=""),
-        y=alt.Y('population_density_per_sqmi', title="Population Density (per sqrm)")).properties(
-            title="Population Density").add_selection(click)
+        opacity=alt.condition(click1, alt.value(1), alt.value(0.05)),
+        x=alt.X('population_density_per_sqmi', title="Population Density (per sqrm)"),
+        y=alt.Y('county_state', title="")).properties(
+            title="Population Density").add_selection(click1)
 
     chart_18 = alt.Chart(df_filtered).mark_bar().encode(
         color = alt.Color('county_state'),
-        opacity=alt.condition(click, alt.value(1), alt.value(0.05)),
-        x=alt.X('county_state', title=""),
-        y=alt.Y('percent_age_17_and_younger', title="Residents under 18 yo (%)")).properties(
-            title="Percent Population 18 and younger").add_selection(click)
+        opacity=alt.condition(click1, alt.value(1), alt.value(0.05)),
+        x=alt.X('percent_age_17_and_younger', title="Residents under 18 yo (%)"),
+        y=alt.Y('county_state', title="")).properties(
+            title="Percent Population 18 and younger").add_selection(click1)
 
     chart_65 = alt.Chart(df_filtered).mark_bar().encode(
         color = alt.Color('county_state'),
-        opacity=alt.condition(click, alt.value(1), alt.value(0.05)),
-        x=alt.X('county_state', title=""),
-        y=alt.Y('percent_age_65_and_older', title="Residents over 65 yo (%)")).properties(
-            title="Percent Population 65 and over").add_selection(click)
+        opacity=alt.condition(click1, alt.value(1), alt.value(0.05)),
+        x=alt.X('percent_age_65_and_older', title="Residents over 65 yo (%)"),
+        y=alt.Y('county_state', title="")).properties(
+            title="Percent Population 65 and over").add_selection(click1)
+
+    ####### CLIMATE CHARTS #######
 
     chart_t = alt.Chart(df_filtered).mark_line().encode(
-        color = alt.Color('county_state' ),
-        opacity=alt.condition(click, alt.value(1), alt.value(0.2)),
+        color = alt.Color('county_state',
+            legend=alt.Legend(
+            orient='top',
+            columns=4,
+            title="", 
+            labelFontSize=18, 
+            labelLimit=0 )
+        ),
+        opacity=alt.condition(click2, alt.value(1), alt.value(0.2)),
         x=alt.X('month(date):T', title="Month"),
         y=alt.Y('mean_temp', title="Mean Temperature (F°)")).properties(
-            title="Mean Monthly Temperature")
+            title="Mean Monthly Temperature").add_selection(click2)
 
     chart_rain = alt.Chart(df_filtered).mark_line().encode(
         color = alt.Color('county_state'),
-        opacity=alt.condition(click, alt.value(1), alt.value(0.2)),
+        opacity=alt.condition(click2, alt.value(1), alt.value(0.2)),
         x=alt.X('month(date):T', title="Month"),
         y=alt.Y('rain', title="Mean Rainfall (in)")).properties(
             title="Mean Monthly Rainfall")
 
     chart_snow = alt.Chart(df_filtered).mark_line().encode(
         color = alt.Color('county_state' ),
-        opacity=alt.condition(click, alt.value(1), alt.value(0.2)),
+        opacity=alt.condition(click2, alt.value(1), alt.value(0.2)),
         x=alt.X('month(date):T', title="Month"),
         y=alt.Y('snow', title="Mean Snowfall (in)")).properties(
             title="Mean Monthly Snowfall")
 
     chart_t_min = alt.Chart(df_filtered).mark_line().encode(
         color = alt.Color('county_state' ),
-        opacity=alt.condition(click, alt.value(1), alt.value(0.2)),
+        opacity=alt.condition(click2, alt.value(1), alt.value(0.2)),
         x=alt.X('month(date):T', title="Month"),
         y=alt.Y('min_temp', title="Min Temperature (F°)")).properties(
             title="Minn Monthly Temperature")
 
     chart_t_max = alt.Chart(df_filtered).mark_line().encode(
         color = alt.Color('county_state' ),
-        opacity=alt.condition(click, alt.value(1), alt.value(0.2)),
+        opacity=alt.condition(click2, alt.value(1), alt.value(0.2)),
         x=alt.X('month(date):T', title="Month"),
         y=alt.Y('max_temp', title="Max Temperature (F°)")).properties(
             title="Max Monthly Temperature")
 
     chart_per = alt.Chart(df_filtered).mark_line().encode(
         color = alt.Color('county_state' ),
-        opacity=alt.condition(click, alt.value(1), alt.value(0.2)),
+        opacity=alt.condition(click2, alt.value(1), alt.value(0.2)),
         x=alt.X('month(date):T', title="Month"),
         y=alt.Y('precipitation', title="Mean Precipitation (in)")).properties(
             title="Mean Monthly Precipitation")
 
-    chart_combo = (chart_unemp & chart_den & chart_18 & chart_65)| ( chart_t & chart_t_min & chart_t_max) | (chart_per & chart_rain & chart_snow) 
+    #chart_combo = (chart_unemp & chart_den & chart_18 & chart_65)| ( chart_t & chart_t_min & chart_t_max) | (chart_per & chart_rain & chart_snow) 
+    
+    climate_charts = ( chart_t & chart_t_min & chart_t_max) | (chart_per & chart_rain & chart_snow) 
+    social_charts = (chart_unemp & chart_den) | (chart_18 & chart_65) 
 
-    return chart_combo.to_html()
+    return climate_charts.to_html(), social_charts.to_html()
 
 if __name__ == '__main__':
     app.run_server(debug=True)
