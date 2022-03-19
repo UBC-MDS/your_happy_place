@@ -55,9 +55,9 @@ The founders of the YHP -
 
 Aldo Saltoa Barros (\@aldojasb),
 
- Rada Wilinofsky(\@Radascript), 
+ Rada Wilinofsky (\@Radascript), 
  
- Yair Guterman(\@gutermanyair). 
+ Yair Guterman (\@gutermanyair). 
  
  Friends from our time in graduate school at UBC. We are a dedicated and hard working team that always strives to produce the best products for the publics use!.
 
