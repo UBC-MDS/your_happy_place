@@ -24,12 +24,12 @@ Our app is simple and easy to use. Simply click the link below and follow the in
 
 Link: https://your-happy-place.herokuapp.com/
 
-1. On the top of the display you will notice a 'state' box and a 'city' box, you begin by selecting all the US cities you would like to start comparing. When doing this you will notice a list of the cities you are selecting begin to appear. 
+1. On the top of the display you will notice a 'state' box and a 'county' box, you begin by selecting all the US counties you would like to start comparing. When doing this you will notice a list of the counties you are selecting begin to appear. 
 
-2. After all the cities you want to compare have been selected, right below the city selection boxes you will notice a legend has been generated with each city having been assigned a colour. This is how you will tell what values on the graphs correspond to what cities.
+2. After all the counties you want to compare have been selected, right below the county selection boxes you will notice a legend has been generated with each county having been assigned a colour. This is how you will tell what values on the graphs correspond to what counties.
 
 3. Below the legend you will see many generated graphs for categories that include: Percentage unemployed, Mean Monthly Temperature, Mean Monthly Precipitation, Minimum monthly temperature, Mean monthly rainfall, Max monthly temperature, Mean monthly Snowfall, Population density, and the list goes on!
-You can then use these plots to compare the cities you have selected above.
+You can then use these plots to compare the counties you have selected above.
 
 4. when you are finished or want to restart simply click the reset button and you may begin from scratch
 
