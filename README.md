@@ -53,13 +53,13 @@ docker-compose up
 
 The founders of the YHP - 
 
-Aldo Saltoa Barros (\@aldojasb),
+ - Aldo Saltoa Barros (\@aldojasb),
 
- Rada Wilinofsky (\@Radascript), 
+ - Rada Rudyak (\@Radascript), 
  
- Yair Guterman (\@gutermanyair). 
+ - Yair Guterman (\@gutermanyair). 
  
- Friends from our time in graduate school at UBC. We are a dedicated and hard working team that always strives to produce the best products for the publics use!.
+Friends from our time in graduate school at UBC. We are a dedicated and hard working team that always strives to produce the best products for the publics use!.
 
 # Get involved
 
