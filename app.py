@@ -14,8 +14,9 @@ app.title = "Your Happy Place: Counties Comparison by Climate and Demographics"
 
 df = df[["state",
         "county", 
-        "county_state", 
-        "year", "month", 
+        "county_state",
+        "year", 
+        "month", 
         "mean_temp", 
         "min_temp", 
         "max_temp", 
@@ -45,6 +46,9 @@ df = df.groupby(["state","county","county_state","month"], as_index=False).agg({
                                                                                 "percent_age_17_and_younger":"mean",
                                                                                 "percent_age_65_and_older":"mean" })
 
+df["day"] = 1
+df["year"] = 2020
+df["date"] = pd.to_datetime(df[['month', 'day', 'year']])
 nestedOptions = county_opt_dict[states[0]]
 
 global selected_counties 
@@ -201,43 +205,42 @@ def plot_altair(add_county, reset, state, county):
     chart_t = alt.Chart(df_filtered).mark_line().encode(
         color = alt.Color('county_state' ),
         opacity=alt.condition(click, alt.value(1), alt.value(0.2)),
-        x=alt.X('month', title="Month"),
+        x=alt.X('month(date):T', title="Month"),
         y=alt.Y('mean_temp', title="Mean Temperature (F°)")).properties(
             title="Mean Monthly Temperature")
 
     chart_rain = alt.Chart(df_filtered).mark_line().encode(
         color = alt.Color('county_state'),
         opacity=alt.condition(click, alt.value(1), alt.value(0.2)),
-        x=alt.X('month', title="Month"),
+        x=alt.X('month(date):T', title="Month"),
         y=alt.Y('rain', title="Mean Rainfall (in)")).properties(
             title="Mean Monthly Rainfall")
 
     chart_snow = alt.Chart(df_filtered).mark_line().encode(
         color = alt.Color('county_state' ),
         opacity=alt.condition(click, alt.value(1), alt.value(0.2)),
-        x=alt.X('month', title="Month"),
+        x=alt.X('month(date):T', title="Month"),
         y=alt.Y('snow', title="Mean Snowfall (in)")).properties(
             title="Mean Monthly Snowfall")
 
     chart_t_min = alt.Chart(df_filtered).mark_line().encode(
         color = alt.Color('county_state' ),
         opacity=alt.condition(click, alt.value(1), alt.value(0.2)),
-        x=alt.X('month', title="Month"),
+        x=alt.X('month(date):T', title="Month"),
         y=alt.Y('min_temp', title="Min Temperature (F°)")).properties(
             title="Minn Monthly Temperature")
-    #return chart.to_html()
 
     chart_t_max = alt.Chart(df_filtered).mark_line().encode(
         color = alt.Color('county_state' ),
         opacity=alt.condition(click, alt.value(1), alt.value(0.2)),
-        x=alt.X('month', title="Month"),
+        x=alt.X('month(date):T', title="Month"),
         y=alt.Y('max_temp', title="Max Temperature (F°)")).properties(
             title="Max Monthly Temperature")
 
     chart_per = alt.Chart(df_filtered).mark_line().encode(
         color = alt.Color('county_state' ),
         opacity=alt.condition(click, alt.value(1), alt.value(0.2)),
-        x=alt.X('month', title="Month"),
+        x=alt.X('month(date):T', title="Month"),
         y=alt.Y('precipitation', title="Mean Precipitation (in)")).properties(
             title="Mean Monthly Precipitation")
 
